@@ -4,50 +4,18 @@ module Cf
 	DIGITS = Hash[('0'..'9').each_with_index.to_a].freeze
 	CF_TABLE = {
 		:even => {
-			'0' => 1,
-			'1' => 0,
-			'2' => 5,
-			'3' => 7,
-			'4' => 9,
-			'5' => 13,
-			'6' => 15,
-			'7' => 17,
-			'8' => 19,
-			'9' => 21,
-			'A' => 1,
-			'B' => 0,
-			'C' => 5,
-			'D' => 7,
-			'E' => 9,
-			'F' => 13,
-			'G' => 15,
-			'H' => 17,
-			'I' => 19,
-			'J' => 21,
-			'K' => 2,
-			'L' => 4,
-			'M' => 18,
-			'N' => 20,
-			'O' => 11,
-			'P' => 3,
-			'Q' => 6,
-			'R' => 8,
-			'S' => 12,
-			'T' => 14,
-			'U' => 16,
-			'V' => 10,
-			'W' => 22,
-			'X' => 25,
-			'Y' => 24,
-			'Z' => 23
+			'0' => 1, '1' => 0, '2' => 5, '3' => 7, '4' => 9, '5' => 13,
+			'6' => 15, '7' => 17, '8' => 19, '9' => 21, 'A' => 1, 'B' => 0,
+			'C' => 5, 'D' => 7, 'E' => 9, 'F' => 13, 'G' => 15, 'H' => 17,
+			'I' => 19, 'J' => 21, 'K' => 2, 'L' => 4, 'M' => 18, 'N' => 20,
+			'O' => 11, 'P' => 3, 'Q' => 6, 'R' => 8, 'S' => 12, 'T' => 14,
+			'U' => 16, 'V' => 10, 'W' => 22, 'X' => 25, 'Y' => 24, 'Z' => 23
 		},
 		:odd => LETTERS.merge(DIGITS)
 	}.freeze
 
 	def self.cf?(string)
-		string.upcase!
-
-		return false unless string =~ /\A[A-Z0-9]{16}\Z/
+		return false unless string.upcase! =~ /\A[A-Z0-9]{16}\Z/
 
 		*payload, control = string.each_char.to_a
 
@@ -81,13 +49,8 @@ module Cf
 			next sum
 		end
 
-		rest = if sum % 10 == 0
-			       0
-		       else
-			       10 - (sum % 10)
-		       end
-
-		return control == rest
+		rest = sum % 10
+		return (rest.zero? ? 0 : (10 - rest)) == control
 	end
 
 end
@@ -99,4 +62,4 @@ puts Cf.pi?('06013061004')
 puts Cf.pi?('04856801008')
 
 puts Cf.cf?('grdntn42s12d969a')
-puts Cf.pi?('06034373474')
+puts Cf.pi?('06034371004')
