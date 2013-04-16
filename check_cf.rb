@@ -1,3 +1,10 @@
+# http://www.icosaedro.it/cf-pi/
+
+# http://www.agenziaentrate.gov.it/wps/content/Nsilib
+#   /Nsi/Home/CosaDeviFare/Richiedere/Codice+fiscale+e+tessera+sanitaria
+#     /Richiesta+TS_CF/SchedaI/Informazioni+codificazione+pf/
+
+
 module Cf
 
 	LETTERS = Hash[('A'..'Z').each_with_index.to_a].freeze
