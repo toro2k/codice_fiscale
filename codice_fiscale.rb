@@ -26,11 +26,11 @@ class CodiceFiscale
   def self.parse(string)
 	  string.upcase!
 	  unless string =~ /\A[A-Z0-9]{16}\Z/
-		  fail ArgumentError.new("Cannot parse #{string}.")
+		  raise ArgumentError.new("Cannot parse #{string}.")
 	  end
 	  new(*string.each_char.to_a)
-  # rescue NoMethodError
-	#   fail TypeError.new("wrong argument type #{}")
+  rescue NoMethodError
+	  raise TypeError.new("wrong argument type #{string.class} (expected String)")
   end
 
   def initialize(*payload, control)
