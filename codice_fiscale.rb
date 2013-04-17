@@ -1,11 +1,13 @@
 # http://www.icosaedro.it/cf-pi/
-
+#
 # http://www.agenziaentrate.gov.it/wps/content/Nsilib
 #   /Nsi/Home/CosaDeviFare/Richiedere/Codice+fiscale+e+tessera+sanitaria
 #     /Richiesta+TS_CF/SchedaI/Informazioni+codificazione+pf/
-
-
-module Cf
+#
+# CodiceFiscale.new('RSSMRA70A01H501S').valid? # => true
+# CodiceFiscale.new('rssmra70a01h501s').valid? # => true
+# CodiceFiscale.new('RSSMRA70A01H501T').valid? # => false
+class CodiceFiscale
 
 	LETTERS = Hash[('A'..'Z').each_with_index.to_a].freeze
 	DIGITS = Hash[('0'..'9').each_with_index.to_a].freeze
@@ -21,12 +23,18 @@ module Cf
 		:odd => LETTERS.merge(DIGITS)
 	}.freeze
 
-	def self.cf?(string)
-		return false unless string.upcase! =~ /\A[A-Z0-9]{16}\Z/
+	def initialize(string)
+		string.upcase!
+		fail string unless string =~ /\A[A-Z0-9]{16}\Z/
+		*@payload, @control = string.each_char.to_a
+	end
 
-		*payload, control = string.each_char.to_a
+	def valid?
+		checksum == @control
+	end
 
-		sum = payload.each_with_index.reduce(0) do |sum, c|
+	def checksum
+		sum = @payload.each_with_index.reduce(0) do |sum, c|
 			char, index = c
 			if index.even?
 				sum += CF_TABLE[:even][char]
@@ -35,38 +43,11 @@ module Cf
 			end
 			next sum
 		end
-
-		return LETTERS.rassoc(sum % 26)[0] == control
+		return LETTERS.rassoc(sum % 26)[0]
 	end
 
-	def self.pi?(string)
-		return false unless string =~ /\A[0-9]{11}\Z/
-
-		*payload, control = string.each_char.map(&:to_i)
-
-		sum = payload.each_with_index.reduce(0) do |sum, c|
-			digit, index = c
-			if index.even?
-				sum += digit
-			else
-				add = digit * 2
-				add -= 9 while add > 9
-				sum += add
-			end
-			next sum
-		end
-
-		rest = sum % 10
-		return (rest.zero? ? 0 : (10 - rest)) == control
+	def to_s
+		"<CF #{@payload.join('')}#{@control}>"
 	end
 
 end
-
-puts Cf.cf?('trlndr82s12d969g')
-puts Cf.cf?('CZZPIO04B04B320w')
-
-puts Cf.pi?('06013061004')
-puts Cf.pi?('04856801008')
-
-puts Cf.cf?('grdntn42s12d969a')
-puts Cf.pi?('06034371004')
