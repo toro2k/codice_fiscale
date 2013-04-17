@@ -23,10 +23,18 @@ class CodiceFiscale
     :odd => LETTERS.merge(DIGITS)
   }.freeze
 
-  def initialize(string)
-    string.upcase!
-    fail ArgumentError.new(string) unless string =~ /\A[A-Z0-9]{16}\Z/
-    *@payload, @control = string.each_char.to_a
+  def self.parse(string)
+	  string.upcase!
+	  unless string =~ /\A[A-Z0-9]{16}\Z/
+		  fail ArgumentError.new("Cannot parse #{string}.")
+	  end
+	  new(*string.each_char.to_a)
+  # rescue NoMethodError
+	#   fail TypeError.new("wrong argument type #{}")
+  end
+
+  def initialize(*payload, control)
+	  @payload, @control = payload, control
   end
 
   def valid?
