@@ -1,8 +1,6 @@
 # http://www.icosaedro.it/cf-pi/
 #
 # http://it.wikipedia.org/wiki/Partita_IVA
-#
-# DA VERIFICARE!!!
 class PartitaIva
 
   def self.valid?(string)
@@ -19,9 +17,9 @@ class PartitaIva
       end
     end
 
-	  rest = sum % 10
-	  checksum = rest.zero? ? 0 : 10 - rest
-	  return checksum == control
+    rest = sum % 10
+    checksum = rest.zero? ? 0 : 10 - rest
+    return checksum == control
   end
 
 end
