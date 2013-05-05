@@ -1,8 +1,6 @@
 # http://www.icosaedro.it/cf-pi/
 #
 # http://it.wikipedia.org/wiki/Partita_IVA
-#
-# DA VERIFICARE!!!
 class PartitaIva
 
   def self.valid?(string)
