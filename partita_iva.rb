@@ -5,33 +5,23 @@
 # DA VERIFICARE!!!
 class PartitaIva
 
-  def initialize(string)
-    fail ArgumentError.new(string) unless string =~ /\A[0-9]{11}\Z/
-    *@payload, @control = string.each_char.map(&:to_i)
-  end
+  def self.valid?(string)
+    string =~ /\A[0-9]{11}\Z/ or return false
 
-  def valid?
-    checksum == @control
-  end
-
-  def checksum
-    sum = @payload.each_with_index.reduce(0) do |sum, c|
-      digit, index = c
+    *payload, control = string.each_char.map(&:to_i)
+    sum = payload.each_with_index.reduce(0) do |sum, (digit, index)|
       if index.even?
-        sum += digit
+        sum + digit
       else
         add = digit * 2
-        add -= 9 while add > 9
-        sum += add
+        add -= 9 if add > 9
+        sum + add
       end
-      next sum
     end
-    rest = sum % 10
-    return rest.zero? ? 0 : 10 - rest
-  end
 
-  def to_s
-    "<PI #{@payload.join('')}#{@control}>"
+	  rest = sum % 10
+	  checksum = rest.zero? ? 0 : 10 - rest
+	  return checksum == control
   end
 
 end
