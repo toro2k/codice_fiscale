@@ -17,7 +17,7 @@ class TestCodiceFiscale < MiniTest::Unit::TestCase
 		end
 	end
 
-	def test_unvalid_codice_fiscale
+	def test_invalid_codice_fiscale
 		cfs = ['MRARSS00A01H501A',
 		       'MRNLCU00A01H501I',
 		       'B' * 16,

@@ -14,7 +14,7 @@ class TestCodiceFiscale < Test::Unit::TestCase
 		end
 	end
 
-	def test_unvalid_partita_iva
+	def test_invalid_partita_iva
 		pis = ['1' * 11,
 		       '0' * 10,
 		       'A' * 11,
