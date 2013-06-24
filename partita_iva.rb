@@ -4,7 +4,7 @@
 class PartitaIva
 
   def self.valid?(string)
-    string =~ /\A[0-9]{11}\Z/ or return false
+    string =~ /\A[0-9]{11}\z/ or return false
 
     *payload, control = string.each_char.map(&:to_i)
     sum = payload.each_with_index.reduce(0) do |sum, (digit, index)|
@@ -18,7 +18,7 @@ class PartitaIva
     end
 
     rest = sum % 10
-    checksum = rest.zero? ? 0 : 10 - rest
+    checksum = rest.zero? ? 0 : (10 - rest)
     return checksum == control
   end
 

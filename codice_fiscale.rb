@@ -21,7 +21,7 @@ class CodiceFiscale
 
   def self.valid?(string)
     string.upcase! rescue return false
-    string =~ /\A[A-Z0-9]{16}\Z/ or return false
+    string =~ /\A[A-Z0-9]{16}\z/ or return false
 
     *payload, control = string.each_char.to_a
     sum = payload.each_with_index.reduce(0) do |sum, (char, index)|
