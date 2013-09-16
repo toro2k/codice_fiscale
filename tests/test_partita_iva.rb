@@ -2,7 +2,7 @@ require 'test/unit'
 
 require 'partita_iva'
 
-class TestCodiceFiscale < Test::Unit::TestCase
+class TestPartitaIva < MiniTest::Unit::TestCase
 
 	def test_valid_partita_iva
 		pis = ['0' * 11,
