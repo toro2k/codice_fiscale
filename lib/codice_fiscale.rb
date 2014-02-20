@@ -24,15 +24,15 @@ class CodiceFiscale
     string =~ /\A[A-Z0-9]{16}\z/ or return false
 
     *payload, control = string.each_char.to_a
-    sum = payload.each_with_index.reduce(0) do |sum, (char, index)|
+    sum = payload.each_with_index.reduce(0) do |acc, (char, index)|
       if index.even?
-        sum + CF_TABLE[:even][char]
+        acc + CF_TABLE[:even][char]
       else
-        sum + CF_TABLE[:odd][char]
+        acc + CF_TABLE[:odd][char]
       end
     end
 
-    return LETTERS.key(sum % 26) == control
+    LETTERS.key(sum % 26) == control
   end
 
 end

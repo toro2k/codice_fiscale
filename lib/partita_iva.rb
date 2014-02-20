@@ -7,19 +7,19 @@ class PartitaIva
     string =~ /\A[0-9]{11}\z/ or return false
 
     *payload, control = string.each_char.map(&:to_i)
-    sum = payload.each_with_index.reduce(0) do |sum, (digit, index)|
+    sum = payload.each_with_index.reduce(0) do |acc, (digit, index)|
       if index.even?
-        sum + digit
+        acc + digit
       else
         add = digit * 2
         add -= 9 if add > 9
-        sum + add
+        acc + add
       end
     end
 
     rest = sum % 10
     checksum = rest.zero? ? 0 : (10 - rest)
-    return checksum == control
+    checksum == control
   end
 
 end
